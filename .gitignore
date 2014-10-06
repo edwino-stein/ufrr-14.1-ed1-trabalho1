@@ -1,4 +1,5 @@
 build/
+testes/
 .settings
 composer.lock
 .project
