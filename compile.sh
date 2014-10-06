@@ -15,7 +15,7 @@
 fileLog="./compile.log";
 dirBuild="./build/";
 
-dirCommonLib="include/common/";
+dirCommonLib="dependencies/common/";
 fileCommon="common";
 
 dependencies='';
