@@ -93,7 +93,7 @@ void destroyCmdList(cmdList * list){
 	while(c != NULL){
 
 		if(c == NULL){
-			return break;
+			break;
 		}
 
 		list->first = getNextCmdNode(c);
