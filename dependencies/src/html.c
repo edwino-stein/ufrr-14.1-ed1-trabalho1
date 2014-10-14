@@ -66,9 +66,8 @@ char * getBodyTpl(const char *script){
 	return body;
 }
 
-/*TODO: Pegar os comandos que foram inseridos pelo usuario*/
-char* getScript(){
-	return strReplece("*CMDS*", " ", SCRIPT);
+char* getScript(char *cmdsJson){
+	return strReplece("*CMDS*", cmdsJson, SCRIPT);
 }
 
 bool exportHtmlToFile(const char *fileName, const char *content){
