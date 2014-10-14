@@ -31,10 +31,10 @@
 //Tamplate basico BODY
 #define BODY_TPL "\n\
 <body>\n\
-	<div class=\"top\"><span>1º Trabalho de Estrutura de dados</span></div>\n\
+	<div class=\"top\"><span>1º Trabalho de Estrutura de Dados</span></div>\n\
 	<div class=\"container\">\n\
         <div class=\"container-head\">Resultado</div>\n\
-        <div class=\"container-body\"><canvas width=\"300\" height=\"300\"></canvas></div>\n\
+        <div class=\"container-body\"><canvas width=\"500\" height=\"500\"></canvas></div>\n\
     </div>\n\
     <div class=\"footer\">\n\
         <p>Desenvolvido por <b>Edwino Stein</b> - 1201324411</p>Boa Vista, Roraima - 2014\n\

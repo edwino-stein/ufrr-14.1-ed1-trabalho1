@@ -12,41 +12,49 @@
         pencil: true,\n\
         x: 0,\n\
         y: 0,\n\
-        getColor: function(id){\n\
-            switch(id){\n\
-                case 0:return \'#000\';break;\n\
-                case 1:return \'#f00\';break;\n\
-                case 2:return \'#0f0\';break;\n\
-                case 3:return \'#00f\';break;\n\
-                case 4:return \'#ff0\';break;\n\
-                case 5:return \'#f0f\';break;\n\
-                case 6:return \'#0ff\';break;\n\
-                case 7:return \'#fff\';break;\n\
-                default:return \'#000\';\n\
-            }\n\
+        angle: 0,\n\
+        degreesToRadians: function (angle){\n\
+            return angle * (Math.PI/180);\n\
+        },\n\
+        ajustAngle: function(angle){\n\
+            if(angle > 360) while(angle > 360) angle -= 360;\n\
+            else if( angle < 0) angle = this.ajustAngle(angle * (-1));\n\
+            return angle;\n\
         },\n\
         execCmd: function (cmd){\n\
             switch(cmd.statement){\n\
-                case \'pd\':this.x += cmd.param;break;\n\
-                case \'pe\':this.x -= cmd.param;break;\n\
-                case \'pf\':this.y -= cmd.param;break;\n\
-                case \'pt\':this.y += cmd.param;break;\n\
-                case \'liga\':this.pencil = true;break;\n\
-                case \'desliga\':this.pencil = false;break;\n\
-                case \'cor\':this.contexto.strokeStyle = this.getColor(cmd.param);return;break;\n\
+                case \'ghorario\':\n\
+                    this.angle -= this.ajustAngle(cmd.param);\n\
+                    if(this.angle < 0) this.angle = 360 + this.angle;\n\
+                    return;\n\
+                break;\n\
+                case \'gantihorario\':\n\
+                    this.angle += this.ajustAngle(cmd.param);\n\
+                    if(this.angle > 360) this.angle -= 360;\n\
+                    return;\n\
+                break;\n\
+                case \'pfrente\':\n\
+                    this.x = this.x + cmd.param * Math.cos(this.degreesToRadians(this.angle));\n\
+                    this.y = this.y - cmd.param * Math.sin(this.degreesToRadians(this.angle));\n\
+                break;\n\
+                case \'ptras\':\n\
+                    this.x = this.x - cmd.param * Math.cos(this.degreesToRadians(this.angle));\n\
+                    this.y = this.y + cmd.param * Math.sin(this.degreesToRadians(this.angle));\n\
+                break;\n\
+                case \'ligar\':this.pencil=true;break;\n\
+                case \'desligar\':this.pencil=false;break;\n\
             }\n\
-            if(this.x < 0) this.x = 0;\n\
-            if(this.x > 300) this.x = 300;\n\
-            if(this.y < 0) this.y = 0;\n\
-            if(this.y > 300) this.y = 300;\n\
-            if(this.pencil){ this.contexto.lineTo(this.x, this.y); this.contexto.stroke();}\n\
-            else{this.contexto.moveTo(this.x, this.y);}\n\
+            if(this.pencil) this.contexto.lineTo(this.x, this.y);\n\
+            else this.contexto.moveTo(this.x, this.y);\n\
         },\n\
         run: function (cmds){\n\
-            this.contexto = document.getElementsByTagName(\'canvas\')[0].getContext(\"2d\");\n\
-            this.contexto.strokeStyle = \'#000\';\n\
-            this.contexto.moveTo(0, 0);\n\
+            var canvasEl = document.getElementsByTagName('canvas')[0];\n\
+            this.contexto = canvasEl.getContext(\"2d\");\n\
+            this.contexto.translate(canvasEl.width/2, canvasEl.height/2);\n\
+            this.contexto.strokeStyle = \'#F00\';\n\
+            this.contexto.moveTo(this.x, this.y);\n\
             for(var i in cmds) this.execCmd(cmds[i]);\n\
+            this.contexto.stroke();\n\
         }\n\
     };\n\
     app.run(comandos);\n\
