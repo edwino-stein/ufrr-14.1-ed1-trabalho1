@@ -17,7 +17,13 @@
   #include <stdbool.h>
 #endif
 
-/* 
+# if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1
+	#if !defined string
+	  #include <string.h>
+	#endif
+#endif
+
+/*
 	Define apelidos para algumas teclas utilizando a numeração do padrão ASCII
 */
 #define KEY_CTRL_C 3
