@@ -46,14 +46,14 @@ cmdsPrototype commands[] = {
 		.desc = "Move um número de unidades para trás.",
 	},
 	{
-		.statement = "gdireita",
+		.statement = "ghorario",
 		.paramType = 'i',
 		.cmdId = 4,
 		.stackable = true,
 		.desc = "Gira um número de graus para a direita.",
 	},
 	{
-		.statement = "gesquerda",
+		.statement = "gantihorario",
 		.paramType = 'i',
 		.cmdId = 5,
 		.stackable = true,
