@@ -25,7 +25,7 @@
   #include <stdbool.h>
 #endif
 
-#include "tads/commands.h"
+#include "commands.h"
 #include "keyboard.h"
 
 #define CONSOLE_INPUT_SYMBLE " #> "

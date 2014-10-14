@@ -4,7 +4,7 @@
   Edwino Stein - 1201324411
 */
 
-#include "../../header/tads/stack.h"
+#include "../header/stack.h"
 
 stack * _newStack(size_t dataSize, unsigned int maxSize){
 

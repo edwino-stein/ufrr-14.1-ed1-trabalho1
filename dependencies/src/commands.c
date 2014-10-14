@@ -4,7 +4,7 @@
   Edwino Stein - 1201324411
 */
 
-#include "../../header/tads/commands.h"
+#include "../header/commands.h"
 
 cmdList * newCmdList(){
 	cmdList * list = malloc(sizeof(cmdList));
