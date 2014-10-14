@@ -8,8 +8,8 @@
 
 #include "dependencies/header/console.h"
 #include "dependencies/header/stack.h"
+#include "dependencies/header/html.h"
 #include "cmdsPrototype.h"
-
 
 /*
 	Imprime a tela de ajuda
@@ -24,9 +24,11 @@ char * cmdStackJsonEncode(stack * cmdStack);
 int main (){
 	sysClear();
 
+	/* TODO: Colocar uma mensagem de boas vindas */
+
 	cmdList * cmdsList = initCommands(commands, (int) sizeof(commands)/sizeof(*commands));
 	stack * cmdStack = newStack(inputCmd*, 0);
-	inputCmd * input;
+	inputCmd * input = NULL;
 
 	//Laço principal do programa
 	while(true){
@@ -90,7 +92,22 @@ int main (){
 		}
 	}
 
-	printf("Resultado:\n%s\n", cmdStackJsonEncode(cmdStack));
+	char * fileName;
+
+	readString(fileName, "Informe o nome do arquivo html que será gerado: ");
+	sprintf(fileName, "%s.html", fileName);
+	printf("\nGerando arquivo \"%s\"...", fileName);
+	exportHtmlToFile(fileName, getHtmlTpl(getHeadTpl(), getBodyTpl(getScript(cmdStackJsonEncode(cmdStack)))));
+	printf("Ok\n\n");
+
+	printf("Deseja abrir o arquivo \"%s\" em seu navegador padrão? (sim ou nao): ", fileName);
+
+	/* TODO: Abrir o navegador do SO */
+	if(getBool("sim", "nao", "Sim ou Nao", 0)){
+		//OSX
+		system("open teste.html");
+		printf("Abrir o navegador!\n");
+	}
 
 	sysPause();
 	return 0;
