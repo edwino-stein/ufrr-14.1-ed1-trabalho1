@@ -3,7 +3,13 @@
   
   Edwino Stein - 1201324411
 */
-  
+
+#define _commands_
+
+#if !defined stdio
+  #include <stdio.h>
+#endif
+
 #if !defined stdlib
   #include <stdlib.h>
 #endif
@@ -11,6 +17,29 @@
 #if !defined string
   #include <string.h>
 #endif
+
+/* Define os valores booleanos */
+#if !defined stdbool
+  #include <stdbool.h>
+#endif
+
+/* Definição da estrutura do prototipo de comando */
+typedef struct cmds_prototype{
+	//String de invocação do comando
+	char *statement;
+
+	//Tipo do parametro
+	char paramType;
+
+	//Id do comando na aplicação
+	int cmdId;
+
+	//Flag que define se o comando pode ser empilhado
+	bool stackable;
+
+	//String que contém a descrição do comando
+	char *desc;
+}cmdsPrototype;
 
 /* Definição do tipo cmdNode */
 typedef struct cmdnode{
@@ -21,10 +50,8 @@ typedef struct cmdnode{
 	struct cmdnode * next;
 
 	//Statement do comando
-	char * command;
+	cmdsPrototype * command;
 
-	//Tipo de parametro esperado pelo parametro
-	char paramType;
 } cmdNode;
 
 /* Definição do tipo cmdlist */
@@ -56,7 +83,7 @@ cmdList * newCmdList();
 	Retorno: cmdNode *: Referencia do novo comando
 
 */
-cmdNode * newCmdNode(const char * cmd, const char paramType);
+cmdNode * newCmdNode(cmdsPrototype * cmd);
 
 /*
 	Adiciona um comando em uma lista de comandos

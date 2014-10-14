@@ -9,6 +9,11 @@
 cmdList * newCmdList(){
 	cmdList * list = malloc(sizeof(cmdList));
 
+	if(list == NULL){
+		perror("malloc");
+    	exit(1);
+	}
+
 	list->first = NULL;
 	list->last = NULL;
 	list->total = 0;
@@ -16,23 +21,18 @@ cmdList * newCmdList(){
 	return list;
 }
 
-cmdNode * newCmdNode(const char * cmd, const char paramType){
+cmdNode * newCmdNode(cmdsPrototype * cmd){
 	cmdNode * c = (cmdNode *) malloc(sizeof(cmdNode));
+
+	if(c == NULL){
+		perror("malloc");
+    	exit(1);
+	}
 
 	c->next = NULL;
 	c->index = 0;
 
-	c->command = (char *) malloc(sizeof(cmd));
-	strcpy(c->command, cmd);
-
-	switch(paramType){
-		case 'd':
-		case 'i':
-			c->paramType = 'd';
-		break;
-		default:
-			c->paramType = 'n';
-	}
+	c->command = cmd;
 
 	return c;
 }
