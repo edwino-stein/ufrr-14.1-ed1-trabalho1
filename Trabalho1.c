@@ -11,6 +11,9 @@
 #include "dependencies/header/html.h"
 #include "cmdsPrototype.h"
 
+#define LINUX_INVOCATION "sensible-browser > /dev/null %s &"
+#define OSX_INVOCATION "open %s"
+
 /*
 	Imprime a tela de ajuda
 */
@@ -20,6 +23,12 @@ void printHelpScreen(cmdList * cmds);
 	Transforma uma pilha de comandos em um array javascript ao estilo json.
 */
 char * cmdStackJsonEncode(stack * cmdStack);
+
+/*
+	Abre o navegador padrão defininido no Sistema operacional
+*/
+void openDefaultBrowser(char *fileName);
+
 
 int main (){
 	sysClear();
@@ -92,22 +101,20 @@ int main (){
 		}
 	}
 
+	sysClear();
 	char * fileName;
-
 	readString(fileName, "Informe o nome do arquivo html que será gerado: ");
 	sprintf(fileName, "%s.html", fileName);
 	printf("\nGerando arquivo \"%s\"...", fileName);
 	exportHtmlToFile(fileName, getHtmlTpl(getHeadTpl(), getBodyTpl(getScript(cmdStackJsonEncode(cmdStack)))));
 	printf("Ok\n\n");
-
+	
 	printf("Deseja abrir o arquivo \"%s\" em seu navegador padrão? (sim ou nao): ", fileName);
 
-	/* TODO: Abrir o navegador do SO */
 	if(getBool("sim", "nao", "Sim ou Nao", 0)){
-		//OSX
-		system("open teste.html");
-		printf("Abrir o navegador!\n");
+		openDefaultBrowser(fileName);
 	}
+	sysClear();
 
 	sysPause();
 	return 0;
@@ -175,4 +182,21 @@ char * cmdStackJsonEncode(stack * cmdStack){
 	}
 
 	return json;
+}
+
+void openDefaultBrowser(char *fileName){
+	char * invocation = NULL;
+
+	#if defined __APPLE__
+	//Abre o navegador no mac
+	invocation = (char *) malloc(strlen(OSX_INVOCATION) + strlen(fileName) + 1);
+	sprintf(invocation, OSX_INVOCATION, fileName);
+	#else
+	//Abre o navegador em distriuições derivadas do debian
+	invocation = malloc(strlen(LINUX_INVOCATION) + strlen(fileName) + 1);
+	sprintf(invocation, LINUX_INVOCATION, fileName);
+	#endif
+
+	system(invocation);
+	free(invocation);
 }
