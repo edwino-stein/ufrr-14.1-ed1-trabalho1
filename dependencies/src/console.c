@@ -183,7 +183,7 @@ inputCmd * getConsoleInput(cmdList * cmds, int bufferSize){
 
 					
 					if(getFirstCmdNode(hint)->command->paramType == 'i'){
-						printf("\n\n%sDica: O \"%s\" comando exige um número positivo como parametro.\n", CONSOLE_OUTPUT_SYMBLE, getFirstCmdNode(hint)->command->statement);
+						printf("\n\n%sDica: O comando \"%s\" exige um número positivo como parâmetro.\n", CONSOLE_OUTPUT_SYMBLE, getFirstCmdNode(hint)->command->statement);
 					}
 
 					printf("\n%s%s", CONSOLE_INPUT_SYMBLE, buffer);
