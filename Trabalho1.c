@@ -120,7 +120,18 @@ int main (){
 
 	if(!stackIsEmpty(cmdStack)){
 		char * fileName;
-		readString(fileName, REQUIRE_FILENAME);
+
+		//Força que a leitura de uma string não vazia
+		while(true){
+			readString(fileName, REQUIRE_FILENAME);
+
+			if(strlen(fileName) > 0){
+				break;
+			}
+
+			free(fileName);
+		}
+		
 		sprintf(fileName, "%s.html", fileName);
 		
 		char * html = getHtmlTpl(getHeadTpl(), getBodyTpl(getScript(cmdStackJsonEncode(cmdStack))));
