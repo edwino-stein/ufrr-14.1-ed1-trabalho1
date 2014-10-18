@@ -9,6 +9,7 @@
 #include "dependencies/header/console.h"
 #include "dependencies/header/stack.h"
 #include "dependencies/header/html.h"
+#include "dependencies/header/messages.h"
 #include "cmdsPrototype.h"
 
 #define LINUX_INVOCATION "sensible-browser > /dev/null %s &"
@@ -33,7 +34,9 @@ void openDefaultBrowser(char *fileName);
 int main (){
 	sysClear();
 
-	/* TODO: Colocar uma mensagem de boas vindas */
+	puts(MAIN_SCREEN_TITLE);
+	puts(HELP_HINT);
+	puts(HELP_SCREEN_HINT_TAB);
 
 	cmdList * cmdsList = initCommands(commands, (int) sizeof(commands)/sizeof(*commands));
 	stack * cmdStack = newStack(inputCmd*, 0);
@@ -46,13 +49,13 @@ int main (){
 
 		if(input == NULL){
 			fputs(CONSOLE_OUTPUT_SYMBLE, stdout);
-			puts("Comando não encontrado! Tente o comando \"ajuda\" para mais comandos.\n");
+			puts(COMMAND_NOT_FOUND);
 			continue;
 		}
 
 		if(input->statement->command->cmdId == 7){
 			fputs(CONSOLE_OUTPUT_SYMBLE, stdout);
-			puts("Console encerrado.\n");
+			puts(EXIT_CONSOLE);
 			break;
 		}
 
@@ -64,11 +67,11 @@ int main (){
 			fputs(CONSOLE_OUTPUT_SYMBLE, stdout);
 
 			if(stackIsEmpy(cmdStack)){
-				puts("Não existe comando para ser desfeito!\n");
+				puts(COMMAND_STACK_EMPTY);
 				continue;
 			}
 			
-			printf("O ultimo comando (\"%s\") foi desfeito.\n\n", getTop(cmdStack, inputCmd*)->statement->command->statement);
+			printf(UNDO_COMMAND, getTop(cmdStack, inputCmd*)->statement->command->statement);
 			popStack(cmdStack);
 			continue;
 		}
@@ -85,13 +88,13 @@ int main (){
 		if(input->statement->command->paramType == 'i'){
 			if(input->paramValue == NULL){
 				fputs(CONSOLE_OUTPUT_SYMBLE, stdout);
-				puts("ERRO: O comando espera um número positivo como parametro!\n");
+				puts(INVALID_PARAM);
 				continue;
 			}
 
 			if(atoi(input->paramValue) <= 0){
 				fputs(CONSOLE_OUTPUT_SYMBLE, stdout);
-				puts("ERRO: O comando espera um número positivo como parametro!\n");
+				puts(INVALID_PARAM);
 				continue;
 			}
 		}
@@ -101,22 +104,19 @@ int main (){
 		}
 	}
 
-	sysClear();
 	char * fileName;
-	readString(fileName, "Informe o nome do arquivo html que será gerado: ");
+	readString(fileName, REQUIRE_FILENAME);
 	sprintf(fileName, "%s.html", fileName);
-	printf("\nGerando arquivo \"%s\"...", fileName);
-	exportHtmlToFile(fileName, getHtmlTpl(getHeadTpl(), getBodyTpl(getScript(cmdStackJsonEncode(cmdStack)))));
-	printf("Ok\n\n");
 	
-	printf("Deseja abrir o arquivo \"%s\" em seu navegador padrão? (sim ou nao): ", fileName);
+	exportHtmlToFile(fileName, getHtmlTpl(getHeadTpl(), getBodyTpl(getScript(cmdStackJsonEncode(cmdStack)))));
+	printf(FILE_SAVED, fileName);
 
-	if(getBool("sim", "nao", "Sim ou Nao", 0)){
+	printf(OPEN_BROWSER_QUESTION, fileName);
+	if(getBool("s", "n", "Sim ou Nao", 0)){
 		openDefaultBrowser(fileName);
 	}
-	sysClear();
 
-	sysPause();
+	sysClear();
 	return 0;
 }
 
@@ -125,27 +125,25 @@ int main (){
 
 void printHelpScreen(cmdList * cmds){
 
-	printf("\t***********************************************\n");
-	printf("\t*                Tela de Ajuda                *\n");
-	printf("\t***********************************************\n");
+	printf(HELP_SCREEN_TITLE);
 
 	cmdNode * c = getFirstCmdNode(cmds);
-	puts("\n * Comandos disponiveis:\n");
+	puts(HELP_SCREEN_HINT_CMDS);
 	while(c != NULL){
 		if(c->command->cmdId >= 0){
 			printf("\t* %s:\n\t    - Parametro: ", c->command->statement);
 
 			if(c->command->paramType == 'i'){
-				printf("Número inteiro positivo.\n");
+				printf(HELP_SCREEN_PARAM_TYPE_I);
 			}
 			else{
-				printf("Não exige um parametro.\n");
+				printf(HELP_SCREEN_PARAM_TYPE_N);
 			}
 			printf("\t    - Descrição: %s\n\n", c->command->desc);
 		}
 		c = getNextCmdNode(c);
 	}
-	puts("\n * Dica: Pressone a tecla TAB para fornecer dicas e completar os comandos.\n");
+	puts(HELP_SCREEN_HINT_TAB);
 }
 
 char * cmdStackJsonEncode(stack * cmdStack){
