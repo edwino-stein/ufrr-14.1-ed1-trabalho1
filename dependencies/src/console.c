@@ -35,7 +35,13 @@ inputCmd * identifyInput(const char * input, cmdList * cmds){
 		statement[i] = input[i];
 		i++;
 	}
-	statement[i++] = '\0';
+	statement[i] = '\0';
+
+	while(input[i] == ' '){
+		if(input[i++] == '\0'){
+			break;
+		}
+	}
 
 	cmdNode * c = getFirstCmdNode(cmds);
 
