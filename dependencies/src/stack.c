@@ -62,7 +62,7 @@ bool _pushStack(stack *s, void *data){
 }
 
 bool _popStack(stack *s){
-	if(stackIsEmpy(s)){
+	if(stackIsEmpty(s)){
 		return false;
 	}
 
@@ -90,12 +90,12 @@ bool stackIsFull(stack *s){
 	return (bool) (s->currentSize >= s->maxSize);
 }
 
-bool stackIsEmpy(stack *s){
+bool stackIsEmpty(stack *s){
 	return (bool) (s->currentSize <= 0);
 }
 
 void cleanStack(stack *s){
-	while(!stackIsEmpy(s)){
+	while(!stackIsEmpty(s)){
 		_popStack(s);
 	}
 }

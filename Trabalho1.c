@@ -66,7 +66,7 @@ int main (){
 		if(input->statement->command->cmdId == 6){
 			fputs(CONSOLE_OUTPUT_SYMBLE, stdout);
 
-			if(stackIsEmpy(cmdStack)){
+			if(stackIsEmpty(cmdStack)){
 				puts(COMMAND_STACK_EMPTY);
 				continue;
 			}
@@ -151,7 +151,7 @@ char * cmdStackJsonEncode(stack * cmdStack){
 
 	stack * temp = newStack(inputCmd*, 0);
 
-	while(!stackIsEmpy(cmdStack)){
+	while(!stackIsEmpty(cmdStack)){
 		size += 23 + (int) strlen(getTop(cmdStack, inputCmd*)->statement->command->statement);
 		
 		if(getTop(cmdStack, inputCmd*)->statement->command->paramType == 'i'){
@@ -168,7 +168,7 @@ char * cmdStackJsonEncode(stack * cmdStack){
 
 	char * json = (char *) malloc(size + 1);
 
-	while(!stackIsEmpy(temp)){
+	while(!stackIsEmpty(temp)){
 		if(getTop(temp, inputCmd*)->statement->command->paramType == 'i'){
 			sprintf(json, "%s{statement:'%s',param:%s},\n", json, getTop(temp, inputCmd*)->statement->command->statement, getTop(temp, inputCmd*)->paramValue);
 		}

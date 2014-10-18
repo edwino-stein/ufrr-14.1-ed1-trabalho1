@@ -123,7 +123,7 @@ bool stackIsFull(stack *s);
 
 	Retorno: bool;
 */
-bool stackIsEmpy(stack *s);
+bool stackIsEmpty(stack *s);
 
 /*
 	Desempilha todos os elementos da pilha.
