@@ -51,7 +51,9 @@ inputCmd * identifyInput(const char * input, cmdList * cmds){
 		}
 		c = getNextCmdNode(c);
 	}
-	
+	//Libera a memoria da string que foi utilizada para reconhecer o comando
+	free(statement);
+
 	if(c == NULL){
 		return NULL;
 	}
@@ -187,6 +189,7 @@ inputCmd * getConsoleInput(cmdList * cmds, int bufferSize){
 					printf("\n%s%s", CONSOLE_INPUT_SYMBLE, buffer);
 				}
 
+				destroyCmdList(hint);
 			break;
 
 			default:

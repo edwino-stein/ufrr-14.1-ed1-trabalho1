@@ -43,10 +43,20 @@ char *strReplece(const char *search, const char *replace, const char *subject){
 }
 
 
-char * getHtmlTpl(const char *head, const char *body){
+char * getHtmlTpl(char *head, char *body){
 
 	char *html = strReplece("*HEAD*", head, HTML_TPL);
+	char * temp = html;
+
 	html = strReplece("*BODY*", body, html);
+
+	//Limpa a memoria das strings que foram utilizadas na concatenação
+	free(temp);
+	free(head);
+	free(body);
+	temp = NULL;
+	head = NULL;
+	body = NULL;
 
 	return html;
 }
@@ -54,20 +64,37 @@ char * getHtmlTpl(const char *head, const char *body){
 char * getHeadTpl(){
 
 	char *head = strReplece("*TITLE*", TITLE, HEAD_TPL);
+	char * temp = head;
+
 	head = strReplece("*CHARSET*", CHARSET, head);
+	//Limpa a memoria do head de antes do CHARSET ser concatenado
+	free(temp);
+	temp = head;
+
 	head = strReplece("*STYLE*", STYLE, head);
+	//Limpa a memoria do head de antes do STYLE ser concatenado
+	free(temp);
+	temp = NULL;
 
 	return head;
 }
 
-char * getBodyTpl(const char *script){
+char * getBodyTpl(char *script){
 	char *body = strReplece("*SCRIPT*", script, BODY_TPL);
+
+	//Limpa a memoria da strig do script
+	free(script);
 
 	return body;
 }
 
 char* getScript(char *cmdsJson){
-	return strReplece("*CMDS*", cmdsJson, SCRIPT);
+	char *script = strReplece("*CMDS*", cmdsJson, SCRIPT);
+
+	//Limpa a memoria do json
+	free(cmdsJson);
+
+	return script;
 }
 
 bool exportHtmlToFile(const char *fileName, const char *content){

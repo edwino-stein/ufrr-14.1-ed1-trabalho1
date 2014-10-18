@@ -44,7 +44,7 @@ char *strReplece(const char *search, const char *replace, const char *subject);
 
 	Retorno: char *: String que contem uma página HTML;
 */
-char * getHtmlTpl(const char *head, const char *body);
+char * getHtmlTpl(char *head, char *body);
 
 /*
 	Gera o template basico do elemento Head.
@@ -61,7 +61,7 @@ char * getHeadTpl();
 
 	Retorno: char *: String que contem o elemento Body;
 */
-char * getBodyTpl(const char *script);
+char * getBodyTpl(char *script);
 
 /*
 	Gera uma tag Script contento um techo de codigo javascript.

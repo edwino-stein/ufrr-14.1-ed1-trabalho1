@@ -30,6 +30,10 @@ char * cmdStackJsonEncode(stack * cmdStack);
 */
 void openDefaultBrowser(char *fileName);
 
+/*
+	Função que percorre uma pilha de comandos e destroi a estrutra com seus nos.
+*/
+void destroyCmdStack(stack * cmdStack);
 
 int main (){
 	sysClear();
@@ -69,6 +73,7 @@ int main (){
 		}
 
 		if(input->statement->command->cmdId == -1){
+			free(input);
 			continue;
 		}
 
@@ -118,17 +123,29 @@ int main (){
 		readString(fileName, REQUIRE_FILENAME);
 		sprintf(fileName, "%s.html", fileName);
 		
-		exportHtmlToFile(fileName, getHtmlTpl(getHeadTpl(), getBodyTpl(getScript(cmdStackJsonEncode(cmdStack)))));
+		char * html = getHtmlTpl(getHeadTpl(), getBodyTpl(getScript(cmdStackJsonEncode(cmdStack))));
+
+		exportHtmlToFile(fileName, html);
+
 		printf(FILE_SAVED, fileName);
 
 		printf(OPEN_BROWSER_QUESTION, fileName);
 		if(getBool("s", "n", "Sim ou Nao", 0)){
 			openDefaultBrowser(fileName);
 		}
+
+		free(html);
+		free(fileName);
 	}
 	else{
 		sysPause();
 	}
+
+	//Destroi a lista de comandos
+	destroyCmdList(cmdsList);
+
+	//Destroi a pilha de comandos
+	destroyCmdStack(cmdStack);
 
 	sysClear();
 	return 0;
@@ -193,6 +210,7 @@ char * cmdStackJsonEncode(stack * cmdStack){
 		popStack(temp);
 	}
 
+	destroyCmdStack(temp);
 	return json;
 }
 
@@ -211,4 +229,18 @@ void openDefaultBrowser(char *fileName){
 
 	system(invocation);
 	free(invocation);
+}
+
+void destroyCmdStack(stack * cmdStack){
+	while(!stackIsEmpty(cmdStack)){
+
+		if(getTop(cmdStack, inputCmd*)->paramValue != NULL){
+			free(getTop(cmdStack, inputCmd*)->paramValue);
+		}
+
+		free(getTop(cmdStack, inputCmd*));
+		popStack(cmdStack);
+	}
+
+	free(cmdStack);
 }

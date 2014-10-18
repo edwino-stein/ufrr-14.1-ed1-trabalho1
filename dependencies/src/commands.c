@@ -98,7 +98,6 @@ void destroyCmdList(cmdList * list){
 
 		list->first = getNextCmdNode(c);
 
-		free(c->command);
 		free(c);
 
 		c = getFirstCmdNode(list);
