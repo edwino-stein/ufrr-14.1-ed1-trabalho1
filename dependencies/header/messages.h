@@ -13,4 +13,4 @@
 #define REQUIRE_FILENAME " * Informe o nome do arquivo HTML que será gerado: "
 #define FILE_SAVED " * Arquivo \"%s\" foi gerado.\n\n"
 #define OPEN_BROWSER_QUESTION " * Deseja abrir o arquivo \"%s\" em seu navegador padrão?[s/n]: "
-
+#define EMPTY_STACT_EXTI_CONFIRMATION "\n * Nenhum comando foi utilizado! Deseja realmente sair?[s/n]: "

@@ -55,6 +55,15 @@ int main (){
 
 		if(input->statement->command->cmdId == 7){
 			fputs(CONSOLE_OUTPUT_SYMBLE, stdout);
+
+			if(stackIsEmpty(cmdStack)){
+				printf(EMPTY_STACT_EXTI_CONFIRMATION);
+				if(!getBool("s", "n", "Sim ou Nao", 0)){
+					puts("\n");
+					continue;
+				}
+			}
+
 			puts(EXIT_CONSOLE);
 			break;
 		}
@@ -104,16 +113,21 @@ int main (){
 		}
 	}
 
-	char * fileName;
-	readString(fileName, REQUIRE_FILENAME);
-	sprintf(fileName, "%s.html", fileName);
-	
-	exportHtmlToFile(fileName, getHtmlTpl(getHeadTpl(), getBodyTpl(getScript(cmdStackJsonEncode(cmdStack)))));
-	printf(FILE_SAVED, fileName);
+	if(!stackIsEmpty(cmdStack)){
+		char * fileName;
+		readString(fileName, REQUIRE_FILENAME);
+		sprintf(fileName, "%s.html", fileName);
+		
+		exportHtmlToFile(fileName, getHtmlTpl(getHeadTpl(), getBodyTpl(getScript(cmdStackJsonEncode(cmdStack)))));
+		printf(FILE_SAVED, fileName);
 
-	printf(OPEN_BROWSER_QUESTION, fileName);
-	if(getBool("s", "n", "Sim ou Nao", 0)){
-		openDefaultBrowser(fileName);
+		printf(OPEN_BROWSER_QUESTION, fileName);
+		if(getBool("s", "n", "Sim ou Nao", 0)){
+			openDefaultBrowser(fileName);
+		}
+	}
+	else{
+		sysPause();
 	}
 
 	sysClear();
